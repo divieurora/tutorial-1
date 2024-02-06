@@ -13,10 +13,31 @@ public class ProductRepository {
 
     public Product create(Product product) {
         productData.add(product);
+        product.setProductId(String.valueOf(productData.size()));
         return product;
     }
 
     public Iterator<Product> findAll() {
         return productData.iterator();
+    }
+
+    public Product edit(Product product) {
+        for (int i = 0; i < productData.size(); i++) {
+            Product currentProduct = productData.get(i);
+            if (currentProduct.getProductId().equals(product.getProductId())) {
+                productData.set(i, product);
+                return product;
+            }
+        }
+        return null;
+    }
+
+    public Product findById(String productId) {
+        for (Product product : productData) {
+            if (product.getProductId().equals(productId)) {
+                return product;
+            }
+        }
+        return null;
     }
 }
