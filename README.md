@@ -15,3 +15,11 @@ For Error Handling and Secure Coding, I have not applied these principles yet be
 ### Reflection 2
 1. After writing unit tests and all the tests has passed, I feel genuinely happy and more confident about the code I have written. In my opinion, I think the number of unit tests needed can vary depends on the complexity of the code and behaviours. Code coverage can  be used as metric to measures percentage of code passed the unit tests, but even though code coverage achieved 100%, it does not guarantee that the code has no bugs or errors because code coverage means that all the code already had a test for the functionality of it.
 2. I personally think that the number of items in the product list can be combined with the create product feature. And if there's a new class similar to the prior function with the same setup procedures and instance variables, it will reduced the code efficiency, cleanliness, and quality. My suggestion for possible improvements is extract the logic into a one test class to reduced duplication and ensure the test cover both of the functionality.
+
+
+## Reflection Tutorial 2
+### Code Quality Issues I Fixed
+I experienced some trouble in fixing code quality issues. However, I have one unit test I changed to make it pass the test. But I have not yet add some test case to increase my code coverage.
+
+### CI/CD Implementations
+I have already implemented CI/CD in my project. I have created workflows that automatically runs after triggered. I am  using SonarCloud for this and as for CD, I am using Koyeb.
