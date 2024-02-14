@@ -15,8 +15,10 @@ jobs:
         with:
           # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 0
+      - name: Set permission
+        run: chmod +x gradlew
       - name: Build
-        run: 
+        run: |
           ./gradlew build
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
