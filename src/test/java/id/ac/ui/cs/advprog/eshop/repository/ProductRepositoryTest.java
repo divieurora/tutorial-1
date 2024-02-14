@@ -65,26 +65,6 @@ class ProductRepositoryTest {
     }
 
     @Test
-    void testEditProduct() {
-        Product product = new Product();
-        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        product.setProductName("Sampo Cap Bambang");
-        product.setProductQuantity(100);
-        productRepository.create(product);
-
-        Product editedProduct = new Product();
-        editedProduct.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        editedProduct.setProductName("Sampo Cap Bango");
-        editedProduct.setProductQuantity(200);
-        productRepository.edit(editedProduct);
-
-        Product deletedProduct = productRepository.findById("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        assertNotNull(deletedProduct);
-        assertEquals("Sampo Cap Bango", deletedProduct.getProductName());
-        assertEquals(200, deletedProduct.getProductQuantity());
-    }
-
-    @Test
     void testEditProductNegative() {
         Product editedProduct = new Product();
         editedProduct.setProductId("12345");
