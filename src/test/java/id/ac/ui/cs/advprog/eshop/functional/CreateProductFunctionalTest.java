@@ -12,10 +12,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.mockito.junit.jupiter.MockitoExtension;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ExtendWith(SeleniumJupiter.class)
+@ExtendWith(MockitoExtension.class)
 public class CreateProductFunctionalTest {
     /**
      * The port number assigned to the running application during test execution.
@@ -62,4 +64,5 @@ public class CreateProductFunctionalTest {
         assertEquals("Sampo Cap Bambang", driver.findElements(By.tagName("td")).get(0).getText());
         assertEquals("100", driver.findElements(By.tagName("td")).get(1).getText());
     }
+
 }

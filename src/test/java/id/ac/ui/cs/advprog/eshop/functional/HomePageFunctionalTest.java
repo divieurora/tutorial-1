@@ -1,9 +1,12 @@
 package id.ac.ui.cs.advprog.eshop.functional;
 
+import id.ac.ui.cs.advprog.eshop.controller.HomeController;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +18,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ExtendWith(SeleniumJupiter.class)
+@ExtendWith(MockitoExtension.class)
 public class HomePageFunctionalTest {
     /**
      * The port number assigned to the running application during test execution.
@@ -54,5 +58,14 @@ public class HomePageFunctionalTest {
 
         // Verify
         assertEquals("Welcome", welcomeMessage);
+    }
+
+    @InjectMocks
+    HomeController homePageController;
+
+    @Test
+    void homePageTitle() {
+        String result = homePageController.homePage();
+        assertEquals("HomePage", result);
     }
 }

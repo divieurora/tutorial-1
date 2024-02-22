@@ -20,6 +20,45 @@ class ProductRepositoryTest {
     @BeforeEach
     void setUp() {
     }
+
+    @Test
+    public void testFindById() {
+        Product product1 = new Product();
+        product1.setProductId("1");
+        product1.setProductName("Product 1");
+        product1.setProductQuantity(10);
+
+        Product product2 = new Product();
+        product2.setProductId("2");
+        product2.setProductName("Product 2");
+        product2.setProductQuantity(20);
+
+        productRepository.create(product1);
+        productRepository.create(product2);
+
+        Product foundProduct = productRepository.findById("1");
+        assertEquals(product1, foundProduct);
+    }
+
+    @Test
+    public void testFindByIdNegative() {
+        Product product1 = new Product();
+        product1.setProductId("1");
+        product1.setProductName("Product 1");
+        product1.setProductQuantity(10);
+
+        Product product2 = new Product();
+        product2.setProductId("2");
+        product2.setProductName("Product 2");
+        product2.setProductQuantity(20);
+
+        productRepository.create(product1);
+        productRepository.create(product2);
+
+        Product foundProduct = productRepository.findById("3");
+        assertNull(foundProduct);
+    }
+
     @Test
     void testCreateAndFind() {
         Product product = new Product();
@@ -75,6 +114,22 @@ class ProductRepositoryTest {
     }
 
     @Test
+    void testEditProduct() {
+        Product product = new Product();
+        product.setProductId("A");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        product.setProductName("Sampo Cap Bango");
+        Product result = productRepository.edit(product);
+        assertEquals("Sampo Cap Bango", result.getProductName());
+        Product notExist = new Product();
+        result = productRepository.edit(notExist);
+        assertNull(result);
+    }
+
+    @Test
     void testDeleteProduct() {
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -82,7 +137,7 @@ class ProductRepositoryTest {
         product.setProductQuantity(100);
         productRepository.create(product);
 
-        productRepository.delete(product);
+        productRepository.delete(product.getProductId());
 
         Product deletedProduct = productRepository.findById("eb558e9f-1c39-460e-8860-71af6af63bd6");
         assertNull(deletedProduct);
