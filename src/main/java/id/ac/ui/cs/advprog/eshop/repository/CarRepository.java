@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public class CarRepository {
+public class  CarRepository {
     static int id = 0;
-    private List<Car> carData = new ArrayList<>();
+    public List<Car> carData = new ArrayList<>();
 
     public Car createCar(Car car){
         if (car.getCarId() == null){
@@ -41,6 +41,7 @@ public class CarRepository {
                 car.setCarName(updatedCar.getCarName());
                 car.setCarColor(updatedCar.getCarColor());
                 car.setCarQuantity(updatedCar.getCarQuantity());
+                return car;
             }
         }
         return null;
