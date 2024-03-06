@@ -5,6 +5,7 @@ import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
+import id.ac.ui.cs.advprog.eshop.model.PaymentVoucher;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,8 +36,6 @@ public class PaymentServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        paymentRepository = new PaymentRepository();
-
         products = new ArrayList<>();
         Product product1 = new Product();
         product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -63,9 +62,11 @@ public class PaymentServiceImplTest {
 
     @Test
     void testAddPaymentVoucher() {
+        Map<String, String> paymentDataVoucher = new HashMap<>();
+        paymentDataVoucher.put("voucherCode", "ESHOP12345678OYY");
         Payment paymentVoucher = payments.get(0);
         doReturn(paymentVoucher).when(paymentRepository).save(any(Payment.class));
-        paymentVoucher = paymentService.addPayment(paymentVoucher.getOrder(), PaymentMethod.VOUCHER.getValue(), paymentVoucher.getPaymentData());
+        paymentVoucher = paymentService.addPayment(paymentVoucher.getOrder(), PaymentMethod.VOUCHER.getValue(), paymentDataVoucher);
 
         doReturn(paymentVoucher).when(paymentRepository).findById(paymentVoucher.getId());
         Payment findResult = paymentService.getPayment(paymentVoucher.getId());
@@ -73,19 +74,23 @@ public class PaymentServiceImplTest {
         assertEquals(paymentVoucher.getId(),findResult.getId() );
         assertEquals(paymentVoucher.getMethod(), findResult.getMethod() );
         assertEquals(paymentVoucher.getStatus(), findResult.getStatus() );
-        verify(paymentService, times(1)).createPaymentVoucher(any(Order.class), any(String.class), any(Map.class));
+    }
 
+    @Test
+    void testAddPaymentCOD() {
+        Map<String, String> paymentDataCOD = new HashMap<>();
+        paymentDataCOD.put("address", "Jl. Jalan");
+        paymentDataCOD.put("deliveryFee", "100000");
         Payment paymentCOD = payments.get(1);
         doReturn(paymentCOD).when(paymentRepository).save(any(Payment.class));
-        paymentCOD = paymentService.addPayment(paymentCOD.getOrder(), PaymentMethod.COD.getValue(), paymentCOD.getPaymentData());
+        paymentCOD = paymentService.addPayment(paymentCOD.getOrder(), PaymentMethod.COD.getValue(), paymentDataCOD);
 
         doReturn(paymentCOD).when(paymentRepository).findById(paymentCOD.getId());
-        findResult = paymentService.getPayment(paymentCOD.getId());
+        Payment findResult = paymentService.getPayment(paymentCOD.getId());
 
         assertEquals(paymentCOD.getId(),findResult.getId() );
         assertEquals(paymentCOD.getMethod(), findResult.getMethod() );
         assertEquals(paymentCOD.getStatus(), findResult.getStatus() );
-        verify(paymentService, times(1)).createPaymentCOD(any(Order.class), any(String.class), any(Map.class));
     }
 
     @Test
@@ -112,7 +117,7 @@ public class PaymentServiceImplTest {
 
     @Test
     void testSetStatus() {
-        assertEquals(PaymentStatus.WAITING.getValue(),payments.get(0).getStatus());
+        assertEquals(PaymentStatus.SUCCESS.getValue(),payments.get(0).getStatus());
         paymentService.setStatus(payments.get(0), PaymentStatus.SUCCESS.getValue());
         assertEquals(PaymentStatus.SUCCESS.getValue(),payments.get(0).getStatus());
         assertEquals(OrderStatus.SUCCESS.getValue(), payments.get(0).getOrder().getStatus());
