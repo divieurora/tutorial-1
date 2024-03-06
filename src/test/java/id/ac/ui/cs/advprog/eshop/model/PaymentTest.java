@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -64,8 +65,8 @@ public class PaymentTest {
     public void testCreatePaymentSuccess() {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOP12345678OYY");
-        Payment payment = new Payment("1", orders.get(0), "VOUCHER", paymentData);
-        assertEquals("VOUCHER", payment.getMethod());
+        Payment payment = new Payment("1", orders.get(0), PaymentMethod.VOUCHER.getValue(), paymentData);
+        assertEquals(PaymentMethod.VOUCHER.getValue(), payment.getMethod());
         assertEquals(paymentData, payment.getPaymentData());
         assertEquals(orders.get(0), payment.getOrder());
     }
@@ -76,7 +77,7 @@ public class PaymentTest {
         paymentData.put("voucherCode", "INVALID");
 
         assertThrows(IllegalArgumentException.class, () -> {
-            new Payment("1", orders.get(0), "VOUCHER", paymentData);
+            new Payment("1", orders.get(0), PaymentMethod.VOUCHER.getValue(), paymentData);
         });
     }
 
@@ -86,7 +87,7 @@ public class PaymentTest {
         paymentData.put("voucherCode", "ESHOK12345678AAA");
 
         assertThrows(IllegalArgumentException.class, () -> {
-            new Payment("1", orders.get(0), "VOUCHER", paymentData);
+            new Payment("1", orders.get(0), PaymentMethod.VOUCHER.getValue(), paymentData);
         });
     }
 
@@ -96,7 +97,7 @@ public class PaymentTest {
         paymentData.put("voucherCode", "ESHOP1234567890A");
 
         assertThrows(IllegalArgumentException.class, () -> {
-            new Payment("1", orders.get(0), "VOUCHER", paymentData);
+            new Payment("1", orders.get(0), PaymentMethod.VOUCHER.getValue(), paymentData);
         });
     }
 
@@ -105,8 +106,8 @@ public class PaymentTest {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("address", "Jl. Jalan");
         paymentData.put("deliveryFee", "100000");
-        Payment payment = new Payment("2", orders.get(1), "COD", paymentData);
-        assertEquals("COD", payment.getMethod());
+        Payment payment = new Payment("2", orders.get(1), PaymentMethod.COD.getValue(), paymentData);
+        assertEquals(PaymentMethod.COD.getValue(), payment.getMethod());
         assertEquals(paymentData, payment.getPaymentData());
         assertEquals(orders.get(1), payment.getOrder());
     }
@@ -118,7 +119,7 @@ public class PaymentTest {
         paymentData.put("deliveryFee", "100000");
 
         assertThrows(IllegalArgumentException.class, () -> {
-            new Payment("2", orders.get(1), "COD", paymentData);
+            new Payment("2", orders.get(1), PaymentMethod.COD.getValue(), paymentData);
         });
     }
 
@@ -129,7 +130,7 @@ public class PaymentTest {
         paymentData.put("deliveryFee", "");
 
         assertThrows(IllegalArgumentException.class, () -> {
-            new Payment("2", orders.get(1), "COD", paymentData);
+            new Payment("2", orders.get(1), PaymentMethod.COD.getValue(), paymentData);
         });
     }
 
