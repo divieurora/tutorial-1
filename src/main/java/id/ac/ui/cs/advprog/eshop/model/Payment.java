@@ -13,6 +13,7 @@ public class Payment {
     String method;
     Map<String, String> paymentData;
     Order order;
+    String status;
 
     public Payment(String id,  Order order, String method, Map<String, String>paymentData){
         this(order, method, paymentData);
@@ -25,7 +26,17 @@ public class Payment {
         this.id = UUID.randomUUID().toString();
         this.method = method;
         this.order = order;
-        setPaymentData(paymentData);
+        try{
+            setPaymentData(paymentData);
+            setStatus(PaymentStatus.SUCCESS.getValue());
+        }catch (IllegalArgumentException e){
+            setStatus(PaymentStatus.REJECTED.getValue());
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private void setStatus(String status){
+        this.status=status;
     }
 
     private void setPaymentData(Map<String, String>paymentData){
