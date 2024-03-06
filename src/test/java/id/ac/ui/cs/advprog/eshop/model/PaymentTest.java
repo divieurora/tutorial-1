@@ -1,11 +1,17 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PaymentTest {
+    private List<Payment> payments;
     private List<Product> products;
     private List<Order> orders;
 
@@ -30,6 +36,111 @@ public class PaymentTest {
         Order order2 = new Order("e334ef40-9eff-4da8-9487-8ee697ecbf1e",
                 products, 1708570000L, "Bambang Sudrajat");
         this.orders.add(order2);
+    }
+
+    @Test
+    public void testCreatePaymentWithEmptyMethod() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("voucherCode", "ESHOP12345678OYY");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment(new Order(orders.get(0).getId(), orders.get(0).getProducts(), orders.get(0).getOrderTime(),
+                    orders.get(0).getAuthor()), "", paymentData);
+        }, "Method cannot be empty");
+    }
+
+    @Test
+    public void testCreatePaymentWithNullMethod() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("voucherCode", "ESHOP12345678OYY");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment(new Order(orders.get(0).getId(), orders.get(0).getProducts(), orders.get(0).getOrderTime(),
+                    orders.get(0).getAuthor()), null, paymentData);
+        }, "Method cannot be null");
+    }
+
+    @Test
+    public void testCreatePaymentSuccess() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("voucherCode", "ESHOP12345678OYY");
+        Payment payment = new Payment("1", orders.get(0), "VOUCHER", paymentData);
+        assertEquals("VOUCHER", payment.getMethod());
+        assertEquals(paymentData, payment.getPaymentData());
+        assertEquals(orders.get(0), payment.getOrder());
+    }
+
+    @Test
+    public void testCreatePaymentWithInvalidVoucherCode() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("voucherCode", "INVALID");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("1", orders.get(0), "VOUCHER", paymentData);
+        });
+    }
+
+    @Test
+    public void testCreatePaymentNotStartWithEshop() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("voucherCode", "ESHOK12345678AAA");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("1", orders.get(0), "VOUCHER", paymentData);
+        });
+    }
+
+    @Test
+    public void testCreatePaymentNotEquals8Numbers() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("voucherCode", "ESHOP1234567890A");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("1", orders.get(0), "VOUCHER", paymentData);
+        });
+    }
+
+    @Test
+    public void testCreatePaymentCODSuccess() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("address", "Jl. Jalan");
+        paymentData.put("deliveryFee", "100000");
+        Payment payment = new Payment("2", orders.get(1), "COD", paymentData);
+        assertEquals("COD", payment.getMethod());
+        assertEquals(paymentData, payment.getPaymentData());
+        assertEquals(orders.get(1), payment.getOrder());
+    }
+
+    @Test
+    public void testCreatePaymentCODBlankAddress() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("address", "");
+        paymentData.put("deliveryFee", "100000");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("2", orders.get(1), "COD", paymentData);
+        });
+    }
+
+    @Test
+    public void testCreatePaymentCODBlankDeliveryFee() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("address", "Jl. Jalan");
+        paymentData.put("deliveryFee", "");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("2", orders.get(1), "COD", paymentData);
+        });
+    }
+
+    @Test
+    public void testCreatePaymentWithDifferentMethod() {
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("voucherCode", "INVALID");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("1", orders.get(0), "OTHER_METHOD", paymentData);
+        });
     }
 
 }
