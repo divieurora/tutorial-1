@@ -82,3 +82,14 @@ I have already implemented CI/CD in my project. I have created workflows that au
 
 
 </details>
+
+<details>
+   <summary>Module 4</summary>
+
+### Reflection Tutorial 4
+
+1. For my Payment models, I am using TDD practice by writing tests before writing the actual code. As in the tutorial, I made sure to include all tests with various edge cases to improving the code coverage, even though I found it difficult to do at first. Overall, TDD Practice is useful for me because I can explore more different testing techniques to improve my code coverage.
+2. Yes I have implemented F.I.R.S.T principles. Most of my unit tests executed less than 1s, so it takes only a little time to run. For code independencies, I am using Mock to eliminate the depedencies. All of my tests are also consistent and repeatable. I am using Assertions to set boolean value output to self-validate. And lastly, I am making the test in timely manner before the code itself.
+
+
+</details>
