@@ -37,6 +37,7 @@ public class PaymentRepositoryTest {
                 products, 1708560000L, "Safira Sudrajat");
         orders.add(order1);
 
+        payments = new ArrayList<>();
         Map<String, String> paymentDataVoucher = new HashMap<>();
         paymentDataVoucher.put("voucherCode", "ESHOP12345678OYY");
         Payment paymentVoucher = new Payment("1", orders.get(0), PaymentMethod.VOUCHER.getValue(), paymentDataVoucher);
@@ -69,5 +70,14 @@ public class PaymentRepositoryTest {
 
         Payment findResult = paymentRepository.findById("omo");
         assertNull(findResult);
+    }
+
+    @Test
+    void testGetAllPayments(){
+        for (Payment payment : payments){
+            paymentRepository.save(payment);
+        }
+        List<Payment> result = paymentRepository.getAllPayments();
+        assertEquals(2, result.size());
     }
 }
